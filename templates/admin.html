@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert Discovery</title>
+  <link rel="stylesheet" href="/static/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Main Area -->
+    <div class="main">
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <form action="/query" method="POST" style="display: flex; gap: 10px;">
+          <input type="text" name="question" placeholder="Search your helicopter query..." required style="flex: 1;">
+          <button class="btn" type="submit">Search</button>
+        </form>
+      </div>
+
+      <!-- Results -->
+      <div id="results">
+        {% if results %}
+          {% for entry in results %}
+            <div class="card">
+              <img src="/static/doc.png" alt="Document">
+              <div class="card-content">
+                <span class="available">• Match Found</span>
+                <h3>{{ entry.doc_name }}</h3>
+                <p>Page No • {{ entry.page_number }}</p>
+                <h3>Content Snippet</h3>
+                <p>{{ entry.text_snippet }}</p>
+                <div class="tags">
+                  {% for tag in entry.subtopics %}
+                    <span class="tag">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+                <a href="/static/pdfs/{{ entry.doc_name }}" target="_blank">
+                  <button class="btn">Open PDF</button>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar-wrapper">
+
+      <!-- PDF Upload Section -->
+      <div class="logsec">
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+          <input type="file" name="pdf" accept="application/pdf" required>
+          <button class="logbtn" type="submit">Upload</button>
+        </form>
+      </div>
+
+      <!-- Contact Info Sidebar -->
+      <div class="sidebar">
+        <h4>Contact Info</h4>
+        <form class="contact-form">
+          <div class="filter-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+          </div>
+          <div class="filter-group">
+            <label for="issue">Issue</label>
+            <textarea id="issue" placeholder="Enter your query"></textarea>
+          </div>
+          <div class="filter-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="xxxxxx@x.com">
+          </div>
+          <button class="btn" type="submit">Submit</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
